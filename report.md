@@ -709,3 +709,232 @@ Se ha desarrollado un chatbot especializado en eventos culturales capaz de trans
 La solución combina técnicas de recuperación de información, procesamiento de datos con Pandas, modelos de lenguaje ejecutados localmente mediante Ollama y una API REST ligera basada en Flask.
 
 El resultado es una plataforma capaz de proporcionar recomendaciones de eventos contextualizadas, actualizadas y enriquecidas con información práctica para facilitar la toma de decisiones por parte del usuario.
+
+# Anexo: Arquitectura Minimalista Basada en APIs y LLM Local
+
+## Filosofía del Proyecto
+
+El objetivo principal del proyecto no es construir un chatbot conversacional generalista, sino desarrollar un sistema de consulta de información estructurada con un consumo computacional mínimo.
+
+La arquitectura ha sido diseñada siguiendo los siguientes principios:
+
+### 1. Uso de APIs como fuente principal de conocimiento
+
+En lugar de almacenar grandes cantidades de información o utilizar técnicas complejas de recuperación documental (RAG), el sistema consulta directamente APIs externas que contienen información actualizada.
+
+Actualmente se utilizan:
+
+* API de Eventos Culturales del Gobierno Vasco.
+* API Meteorológica Open-Meteo.
+
+De esta forma:
+
+* Los datos están siempre actualizados.
+* No es necesario mantener bases vectoriales.
+* No es necesario realizar indexación documental.
+* Se reduce significativamente el uso de memoria.
+
+---
+
+### 2. Uso del LLM únicamente como generador de filtros
+
+El modelo de lenguaje no responde directamente a las preguntas del usuario.
+
+Su única función consiste en traducir una consulta en lenguaje natural a una expresión Python capaz de filtrar un DataFrame previamente construido.
+
+Ejemplo:
+
+Consulta:
+
+```text
+Quiero eventos gratuitos en Bilbao
+```
+
+Código generado:
+
+```python
+I[(I.municipalityEs=="Bilbao") & (I.priceEs=="Gratis")]
+```
+
+Posteriormente:
+
+1. El código es ejecutado.
+2. Se obtiene el subconjunto de eventos.
+3. Los resultados se formatean en Markdown.
+
+Este enfoque reduce considerablemente:
+
+* Tiempo de inferencia.
+* Consumo de memoria.
+* Riesgo de alucinaciones.
+* Complejidad de la arquitectura.
+
+---
+
+### 3. Procesamiento estructurado
+
+La información obtenida de las APIs se transforma en un único DataFrame de Pandas que actúa como base de conocimiento temporal.
+
+Las consultas se realizan mediante operaciones nativas de filtrado.
+
+Ventajas:
+
+* Alto rendimiento.
+* Simplicidad.
+* Facilidad de depuración.
+* Escalabilidad para conjuntos de datos moderados.
+
+---
+
+## Dependencias del Proyecto
+
+El proyecto utiliza únicamente cuatro dependencias externas:
+
+```text
+flask==3.1.3
+ollama==0.6.1
+requests==2.32.5
+pandas==2.3.3
+```
+
+### Flask
+
+Responsable de exponer el chatbot mediante una API REST.
+
+### Ollama
+
+Permite ejecutar localmente modelos de lenguaje sin depender de servicios externos.
+
+### Requests
+
+Utilizada para realizar llamadas HTTP a las APIs externas.
+
+### Pandas
+
+Utilizada para:
+
+* Construcción de DataFrames.
+* Transformación de datos.
+* Filtrado de eventos.
+* Enriquecimiento de información meteorológica.
+
+---
+
+# Configuración del Modelo LLM
+
+## Motor de Inferencia
+
+```text
+Ollama
+```
+
+---
+
+## Modelo Utilizado
+
+```text
+qwen2.5-coder:latest
+```
+
+Durante el desarrollo también se consideraron otros modelos:
+
+```text
+qwen2.5-coder:3b
+codellama:latest
+qwen3:4b
+fauxpaslife/nanbeige4.1-python-deepthink:3b
+```
+
+Sin embargo, la versión seleccionada fue:
+
+```text
+qwen2.5-coder:latest
+```
+
+debido a su capacidad para generar expresiones Python precisas y consistentes.
+
+---
+
+## Parámetros de Inferencia
+
+```python
+options={
+    "temperature": 0.1,
+    "top_p": 0.2
+}
+```
+
+### Temperature = 0.1
+
+Se utiliza una temperatura muy baja para:
+
+* Reducir creatividad innecesaria.
+* Mejorar reproducibilidad.
+* Obtener filtros más estables.
+
+### Top P = 0.2
+
+Limita el espacio de búsqueda del modelo.
+
+Beneficios:
+
+* Menor variabilidad.
+* Menor riesgo de errores sintácticos.
+* Respuestas más deterministas.
+
+---
+
+# Prompt del Sistema
+
+El sistema utiliza un prompt extremadamente restrictivo para forzar al modelo a comportarse como un generador de código.
+
+Objetivos principales:
+
+* Impedir respuestas conversacionales.
+* Evitar explicaciones.
+* Garantizar la salida exclusiva de código Python.
+* Restringir las consultas al contexto disponible.
+
+El prompt establece reglas como:
+
+```text
+You are a strict code-only assistant.
+Only respond with valid Python code.
+Do not explain anything.
+Do not add comments.
+Output ONLY Python code.
+```
+
+Además, se proporciona al modelo información contextual sobre:
+
+* Municipios disponibles.
+* Fechas existentes.
+* Idiomas.
+* Tipos de eventos.
+* Temperaturas.
+* Humedad.
+* Probabilidad de lluvia.
+* Horarios.
+* Precios.
+
+Esto permite que el modelo genere filtros coherentes sin necesidad de consultar fuentes externas.
+
+---
+
+# Ventajas de la Arquitectura Adoptada
+
+Comparada con arquitecturas tradicionales basadas en RAG o agentes complejos, la solución desarrollada presenta las siguientes ventajas:
+
+| Característica         | Solución Actual    | RAG Tradicional        |
+| ---------------------- | ------------------ | ---------------------- |
+| Base vectorial         | No                 | Sí                     |
+| Embeddings             | No                 | Sí                     |
+| Indexación documental  | No                 | Sí                     |
+| Consumo de memoria     | Bajo               | Medio/Alto             |
+| Complejidad            | Baja               | Alta                   |
+| Latencia               | Baja               | Media                  |
+| Coste de mantenimiento | Bajo               | Medio/Alto             |
+| Actualización de datos | Automática vía API | Reindexación necesaria |
+
+La arquitectura resultante es especialmente adecuada para asistentes especializados que trabajan sobre datos estructurados obtenidos mediante APIs públicas.
+
