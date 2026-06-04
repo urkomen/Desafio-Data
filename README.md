@@ -60,13 +60,22 @@ Servidor:
    
  http://127.0.0.1:5000  
 ![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnEAAAACCAYAAAA3pIp+AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAANUlEQVR4nO3OQQmAABRAsSd4NIGhrOTvaQBrWMGbCFuCLTOzV2cAAPzFvVZbdXw9AQDgtesBhYQEO+64Y8AAAAAASUVORK5CYII=)  
-**🔎 Uso**  
-Ejemplo:  
-   
- (http://127.0.0.1:5000/Eventos gratuitos en Bilbao)
-Con curl:  
-   
- curl "http://127.0.0.1:5000/Eventos en euskera"  
+
+O, si prefieres que ambos ejemplos sean equivalentes:
+
+```md
+## 🔎 Uso
+
+### Desde el navegador
+Ejemplo:
+
+http://127.0.0.1:5000/Eventos%20en%20euskera
+
+### Desde la terminal con cURL
+Ejemplo:
+
+```bash
+curl "http://127.0.0.1:5000/Eventos%20en%20euskera"
 ![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnEAAAACCAYAAAA3pIp+AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAANklEQVR4nO3OQQmAABRAsSeYxZw/lieLGMACBrCCNxG2BFtmZquOAAD4i3Ot7mr/egIAwGvXA6fGBdgoVMwYAAAAAElFTkSuQmCC)  
 **🧠 Funcionamiento interno**  
 1. Flask recibe la petición.  
