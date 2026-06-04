@@ -76,6 +76,7 @@ Ejemplo:
 
 ```bash
 curl "http://127.0.0.1:5000/Eventos%20en%20euskera"
+
 ![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnEAAAACCAYAAAA3pIp+AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAANklEQVR4nO3OQQmAABRAsSeYxZw/lieLGMACBrCCNxG2BFtmZquOAAD4i3Ot7mr/egIAwGvXA6fGBdgoVMwYAAAAAElFTkSuQmCC)  
 **🧠 Funcionamiento interno**  
 1. Flask recibe la petición.  
