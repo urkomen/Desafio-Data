@@ -3,9 +3,9 @@
 Este proyecto es un chatbot minimalista que permite consultar eventos culturales del País Vasco utilizando lenguaje natural.  
 El sistema:  
 - Consume APIs públicas de eventos culturales del Gobierno Vasco.  
-- Enriquese los eventos con información meteorológica (Open-Meteo).  
+- Enriquece los eventos con información meteorológica (Open-Meteo).  
 - Construye un DataFrame con Pandas como base de datos en memoria.  
-- Utiliza un modelo LLM local (Ollama) para transformar preguntas en filtros Python.  
+- Utiliza un LLM local (Ollama) para transformar preguntas en filtros Python.  
 - Ejecuta esos filtros para obtener resultados.  
 - Devuelve la respuesta en formato Markdown.  
 - Expone el sistema mediante una API REST con Flask.  
