@@ -61,15 +61,12 @@ Servidor:
  http://127.0.0.1:5000  
 ![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnEAAAACCAYAAAA3pIp+AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAANUlEQVR4nO3OQQmAABRAsSd4NIGhrOTvaQBrWMGbCFuCLTOzV2cAAPzFvVZbdXw9AQDgtesBhYQEO+64Y8AAAAAASUVORK5CYII=)  
 
-O, si prefieres que ambos ejemplos sean equivalentes:
-
-```md
 ## 🔎 Uso
 
 ### Desde el navegador
 Ejemplo:
 
-http://127.0.0.1:5000/Eventos%20en%20euskera
+http://127.0.0.1:5000/Eventos%20gratuitos%20en%20Bilbao
 
 ### Desde la terminal con cURL
 Ejemplo:
