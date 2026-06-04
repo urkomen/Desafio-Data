@@ -942,6 +942,7 @@ Example: "Eventos que ocurren en Mayo"
 Answer: "I[I.openingHoursEs.str.contains("mayo")]"
 
 REMARK: If the user asks "sorpendeme" return a random filter over the variable I and return it.
+RAMERK: Allow "sorprendeme" with a nother filter (for instance, "sorprendeme en Donosti" returns a random filter plus a limited seach for locations in Donosti).
 REMARK: Search similar information from the event title when asked.
 
 """
