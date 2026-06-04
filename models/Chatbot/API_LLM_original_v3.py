@@ -21,8 +21,17 @@ def get_event_types():
 
 
 def get_upcoming_events():
-    r = requests.get(UPCOMING_EVENTS_API)
-    return r.json()
+    # Blindaje del consumo externo: ante fallo de red, JSON inválido o ausencia
+    # de "items", devolvemos una estructura segura en vez de propagar el traceback.
+    try:
+        r = requests.get(UPCOMING_EVENTS_API, timeout=30)
+        r.raise_for_status()
+        data = r.json()
+    except Exception:
+        return {"items": []}
+    if not isinstance(data, dict) or not isinstance(data.get("items"), list):
+        return {"items": []}
+    return data
 
 def clean_html(text: str) -> str:
     if not text:
@@ -806,27 +815,56 @@ def build_dataframe():
     upcoming_events = get_upcoming_events()
     I = pd.DataFrame(upcoming_events["items"])
 
+    # Garantiza columnas esperadas aunque la API las omita en algún evento.
+    for col in ("municipalityEs", "municipalityLatitude", "municipalityLongitude"):
+        if col not in I.columns:
+            I[col] = None
+
     # ---- Build municipality -> (lat, lon)
+    # Se saltan municipios nulos/vacíos y los que no tienen coordenadas resolubles;
+    # nunca se accede a [0] sobre una lista vacía.
     M = {}
     for m in I.municipalityEs.unique():
-        lat = I[I.municipalityEs == m].municipalityLatitude.unique()[0]
-        lon = I[I.municipalityEs == m].municipalityLongitude.unique()[0]
-        M[m] = (lat, lon)
+        if not is_valid(m):
+            continue
+        lats = I[I.municipalityEs == m].municipalityLatitude.dropna().unique()
+        lons = I[I.municipalityEs == m].municipalityLongitude.dropna().unique()
+        if len(lats) == 0 or len(lons) == 0:
+            continue
+        M[m] = (lats[0], lons[0])
 
-    # ---- Get weather per municipality
+    # ---- Get weather per municipality (si el lookup falla, se omite ese municipio)
     W = {}
     for m in M.keys():
-        W[m] = get_weather_info(*M[m])
+        try:
+            W[m] = get_weather_info(*M[m])
+        except Exception:
+            continue
 
-    Weather = pd.DataFrame(W)
+    # ---- Valores seguros para eventos sin municipio/clima resoluble
+    DEFAULT_WEATHER = {
+        "temperature": "No informado",
+        "humidity": "No informado",
+        "wind_speed": "No informado",
+        "time": "No informado",
+        "last_updated": "No informado",
+        "precipitation_probability": "No informado",
+    }
 
-    # ---- Merge into dataframe
-    I["temperature"] = [Weather[i]["temperature"] for i in I.municipalityEs]
-    I["humidity"] = [Weather[i]["humidity"] for i in I.municipalityEs]
-    I["wind_speed"] = [Weather[i]["wind_speed"] for i in I.municipalityEs]
-    I["time"] = [Weather[i]["time"] for i in I.municipalityEs]
-    I["last_updated"] = [Weather[i]["last_updated"] for i in I.municipalityEs]
-    I["precipitation_probability"] = [Weather[i]["precipitation_probability"] for i in I.municipalityEs]
+    def weather_value(municipality, key):
+        info = W.get(municipality)
+        return info.get(key, DEFAULT_WEATHER[key]) if info else DEFAULT_WEATHER[key]
+
+    # ---- Merge into dataframe (sin acceso por clave directa: evita KeyError con municipio nulo)
+    for key in (
+        "temperature",
+        "humidity",
+        "wind_speed",
+        "time",
+        "last_updated",
+        "precipitation_probability",
+    ):
+        I[key] = [weather_value(m, key) for m in I.municipalityEs]
 
     return I
 
@@ -846,6 +884,23 @@ else:
     I.to_csv(CSV_PATH, index=False)
 
 
+# ──────────────────────────────────────────────────────────────
+# PUERTA DEFENSIVA DE COLUMNAS
+# Garantiza, en un único sitio, las columnas que el resto del módulo asume
+# (accesos directos y el SYSTEM_PROMPT con .unique()). Si la API de Euskadi
+# omite alguna o la caché es parcial, se crea con valor seguro y así un único
+# evento/payload incompleto no tumba el arranque del script.
+# ──────────────────────────────────────────────────────────────
+COLUMNAS_ESPERADAS = [
+    "nameEs", "municipalityEs", "openingHoursEs", "language",
+    "startDate", "endDate", "priceEs", "typeEs", "urlNameEs", "purchaseUrlEs",
+    "temperature", "humidity", "wind_speed", "precipitation_probability",
+]
+for _col in COLUMNAS_ESPERADAS:
+    if _col not in I.columns:
+        I[_col] = "No informado"
+
+
 #upcoming_events=get_upcoming_events()
 #I=pd.DataFrame(upcoming_events["items"])
 
@@ -855,8 +910,10 @@ I["language"]=I.language.fillna("No informado")
 I["priceEs"]=I["priceEs"].fillna("No informado")
 I["urlNameEs"]=I.urlNameEs.fillna("Información en la imagen")
 I["purchaseUrlEs"]=I.purchaseUrlEs.fillna("No informado")
-I["startDate"] = pd.to_datetime(I["startDate"])
-I["endDate"] = pd.to_datetime(I["endDate"])
+# errors="coerce": fechas fuera de rango/inválidas pasan a NaT en vez de lanzar
+# OverflowError (algún evento de Euskadi trae fechas que desbordan pandas).
+I["startDate"] = pd.to_datetime(I["startDate"], errors="coerce")
+I["endDate"] = pd.to_datetime(I["endDate"], errors="coerce")
 
 SYSTEM_PROMPT = f"""
 You are a strict code-only assistant that will provide code answers based on a naive python user.
@@ -993,7 +1050,12 @@ def apply_filter(expr):
 #print(question)
 model_query=ask_model(question)
 #print(model_query)
-assignment=make_assignment(model_query)
+try:
+    assignment=make_assignment(model_query)
+except ValueError:
+    # El LLM no devolvió un bloque ```python``` válido: caemos a un filtro vacío
+    # para que el flujo muestre el mensaje amable en vez de un traceback/ERROR.
+    assignment="pd.DataFrame()"
 Filter=apply_filter(assignment)
 #print(Filter)
 try:
