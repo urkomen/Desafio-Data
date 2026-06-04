@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Entorno
+.env
+
+# Caché generada en runtime por el chatbot
+events_weather.csv

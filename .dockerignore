@@ -1,0 +1,27 @@
+# Control de versiones / metadatos
+.git
+.gitignore
+.github
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.env
+
+# Caché generada en runtime por el chatbot
+events_weather.csv
+**/events_weather.csv
+
+# Artefactos Docker (no necesarios dentro del contexto)
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Editor / SO
+.vscode/
+.idea/
+.DS_Store
