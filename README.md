@@ -63,7 +63,7 @@ Servidor:
 **🔎 Uso**  
 Ejemplo:  
    
- http://127.0.0.1:5000/Eventos gratuitos en Bilbao  
+ (http://127.0.0.1:5000/Eventos gratuitos en Bilbao)
 Con curl:  
    
  curl "http://127.0.0.1:5000/Eventos en euskera"  
