@@ -1,0 +1,26 @@
+# Recomendador de planes familiares (/planes) — servicio Flask independiente.
+# Sin Ollama, sin red externa en runtime: solo Flask + pandas + CSV horneados.
+FROM python:3.12-slim
+
+# Evita .pyc y fuerza logs sin buffer (mejor para `docker compose logs`)
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+# Contexto de build = raíz del repo
+WORKDIR /app
+
+# Instalar dependencias primero para aprovechar la caché de capas
+COPY recomendador/requirements_app.txt /app/recomendador/requirements_app.txt
+RUN pip install --no-cache-dir -r /app/recomendador/requirements_app.txt
+
+# Copiar el resto del repo (respeta .dockerignore; incluye los CSV de datos)
+COPY . /app
+
+# WORKDIR final: la app usa rutas CSV relativas a esta carpeta
+WORKDIR /app/recomendador
+
+# Flask escucha internamente en 5000 (ver app.py)
+EXPOSE 5000
+
+# Arranca la app tal cual (sin cambiar lógica)
+CMD ["python", "app.py"]

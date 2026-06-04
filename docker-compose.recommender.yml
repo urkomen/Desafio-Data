@@ -1,0 +1,11 @@
+services:
+  data-recommender:
+    build:
+      context: .
+      dockerfile: Dockerfile.recommender
+    image: desafio-data-recommender:latest
+    container_name: desafio-data-recommender
+    ports:
+      # host:contenedor -> Flask interno en 5000, expuesto como 5000.
+      - "5000:5000"
+    restart: unless-stopped
