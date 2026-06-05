@@ -115,4 +115,24 @@ El modelo SOLO genera código Python para filtrar el DataFrame.
 - Sistema de caché avanzado  
 - Autenticación API  
 - Tests automáticos  
+
+---
+
+**🐳 Docker**  
+El servicio Flask de esta carpeta (`app4.py`) está dockerizado. La configuración
+(`Dockerfile`, `.dockerignore`, `docker-compose.yml`) vive en la **raíz del repo** y
+el contexto de build es la raíz, así que los comandos se ejecutan desde allí:
+
+```bash
+docker compose build
+docker compose up -d
+curl http://localhost:5001/
+```
+
+- Entrypoint por defecto: `app4.py` → ejecuta `API_LLM_original_v3.py` por subprocess.
+- Ollama corre en el **host**, no en el contenedor (`OLLAMA_HOST=http://host.docker.internal:11434`).
+- Flask escucha en `5000` dentro del contenedor y se expone como `5001` en el host.
+
+Consulta la sección **🐳 Docker** del `README.md` de la raíz para los detalles completos.
+
 ![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnEAAAACCAYAAAA3pIp+AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAM0lEQVR4nO3OUQmAQBBAwSdcjsu6HYxoDsEK/okwk2COmdnVGQAAf3GtalX76wkAAK/dDxFWBDkFf6+SAAAAAElFTkSuQmCC)  
