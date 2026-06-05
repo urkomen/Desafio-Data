@@ -118,77 +118,21 @@ El modelo SOLO genera código Python para filtrar el DataFrame.
 
 ---
 
-## 🐳 Docker
-
-El chatbot Flask (`models/Chatbot/app4.py`) se puede ejecutar en un contenedor para
-consumirlo desde otros servicios (p. ej. el backend Express de DESAFIO-26).
-
-**Importante:** Ollama **NO** corre dentro del contenedor. El contenedor llama al
-Ollama instalado en el **host** mediante la variable `OLLAMA_HOST`.
-
-### Requisitos previos
-
-- Docker + Docker Compose.
-- Ollama corriendo en el host con el modelo descargado:
-  ```bash
-  ollama pull qwen2.5-coder
-  ```
-  Asegúrate de que Ollama está escuchando en `11434`. En Docker Desktop (Mac/Windows)
-  el contenedor lo alcanza vía `host.docker.internal`. Si la conexión falla, arranca
-  Ollama escuchando en todas las interfaces:
-  ```bash
-  OLLAMA_HOST=0.0.0.0:11434 ollama serve
-  ```
-
-### Configuración
-
-| Parámetro            | Valor                                   |
-|----------------------|-----------------------------------------|
-| Imagen base          | `python:3.12-slim`                      |
-| Contexto de build    | raíz del repo                           |
-| `WORKDIR`            | `/app/models/Chatbot`                   |
-| Entrypoint (default) | `app4.py` (configurable: `APP_ENTRYPOINT`) |
-| Puerto interno Flask | `5000`                                  |
-| Puerto en el host    | `5001` (`5001:5000`)                    |
-| Ollama del host      | `OLLAMA_HOST=http://host.docker.internal:11434` |
-
-### Uso
+**🐳 Docker**  
+El servicio Flask de esta carpeta (`app4.py`) está dockerizado. La configuración
+(`Dockerfile`, `.dockerignore`, `docker-compose.yml`) vive en la **raíz del repo** y
+el contexto de build es la raíz, así que los comandos se ejecutan desde allí:
 
 ```bash
-# Construir
 docker compose build
-
-# Arrancar en segundo plano
 docker compose up -d
-
-# Estado
-docker compose ps
-
-# Health-check (JSON inmediato)
 curl http://localhost:5001/
-
-# Consulta en lenguaje natural (lanza Ollama + APIs externas; puede tardar)
-curl "http://localhost:5001/Plan%20gratis%20para%20hoy%20en%20Bilbao"
-
-# Logs
-docker compose logs --tail=80
-
-# Parar
-docker compose down
 ```
 
-> La primera consulta construye un DataFrame consultando APIs externas (Euskadi +
-> Open-Meteo) y luego invoca el LLM, por lo que puede tardar varios segundos.
+- Entrypoint por defecto: `app4.py` → ejecuta `API_LLM_original_v3.py` por subprocess.
+- Ollama corre en el **host**, no en el contenedor (`OLLAMA_HOST=http://host.docker.internal:11434`).
+- Flask escucha en `5000` dentro del contenedor y se expone como `5001` en el host.
 
-### Endpoints expuestos
-
-- `GET /` → estado del servicio (JSON).
-- `GET /<pregunta>` → respuesta en Markdown a la pregunta en lenguaje natural.
-
-### Cambiar el entrypoint (opcional)
-
-```bash
-APP_ENTRYPOINT=app3.py docker compose up
-```
+Consulta la sección **🐳 Docker** del `README.md` de la raíz para los detalles completos.
 
 ![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnEAAAACCAYAAAA3pIp+AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAM0lEQVR4nO3OUQmAQBBAwSdcjsu6HYxoDsEK/okwk2COmdnVGQAAf3GtalX76wkAAK/dDxFWBDkFf6+SAAAAAElFTkSuQmCC)  

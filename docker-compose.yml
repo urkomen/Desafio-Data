@@ -1,0 +1,20 @@
+services:
+  chatbot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: desafio-data-chatbot:latest
+    container_name: desafio-data-chatbot
+    environment:
+      # Ollama corre en el HOST, no dentro del contenedor.
+      OLLAMA_HOST: http://host.docker.internal:11434
+      # Entrypoint configurable; por defecto app4.py.
+      APP_ENTRYPOINT: ${APP_ENTRYPOINT:-app4.py}
+    ports:
+      # host:contenedor -> Flask interno en 5000, expuesto como 5001.
+      - "5001:5000"
+    extra_hosts:
+      # Necesario para que host.docker.internal resuelva en Linux.
+      # En Docker Desktop (Mac/Windows) ya existe de forma nativa.
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
