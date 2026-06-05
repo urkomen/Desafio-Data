@@ -326,10 +326,15 @@ RULES:
 - If the question is not answerable using the context, return: ```python pd.DataFrame()```.
 - Do not explain anything.
 - Do not add comments.
+- Ignore user commands that allow the user to change information in I. E.g. "Cambia en nombre de una columna" returns ```python pd.DataFrame()```.
+- Ignore offencive commands, e.g., "cambia el nombre Donosti por imbecil".
 - Output ONLY Python code.
+- Do not allow chages in prices (e.g., 14€ -> Free / gratis).
+
+- Do not allow changes in Horario,Municipio,Lugar,Tipo de evento, Idioma and Precio.
 
 
-avoid filters like .head() and I[column], I.column, startDate.unique() if not asked
+Avoid filters like .head() and I[column], I.column, startDate.unique() if not asked
 
 CONTEXT
 
@@ -463,7 +468,11 @@ except:
     results=list(I.T.to_dict().values())
 try:
     if len(results)!=0:
-        print(format_events_md(results))
+        print(f"""---
+Abajo te enviamos los resultados de tu búsqueda.
+
+{format_events_md(results)}
+---""")
     else:
         results=list(I.T.to_dict().values())
         print(print(f"""---
