@@ -9,8 +9,8 @@ ROOT_DIR = BASE_DIR.parent.parent
 DATA_DIR = ROOT_DIR / "data"
 
 DB_PATH         = DATA_DIR / "eventos.db"
-EMBEDDINGS_PATH = DATA_DIR / "embeddings.npy"
-INDEX_PATH      = DATA_DIR / "embeddings_index.csv"
+EMBEDDINGS_PATH = DATA_DIR / "embeddings" / "embeddings.npy"
+INDEX_PATH      = DATA_DIR / "embeddings" / "embeddings_index.csv"
 
 MODELO_ST = "intfloat/multilingual-e5-large"
 TOP_K     = 10
