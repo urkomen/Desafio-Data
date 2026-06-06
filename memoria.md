@@ -6,15 +6,14 @@ Esta plataforma es un sistema inteligente diseñado para transformar la manera e
 
 El objetivo principal es ofrecer planes culturales (como exposiciones, conciertos, teatro o rutas de senderismo) que se ajusten perfectamente a la situación y preferencias de cada usuario. Para lograrlo, la plataforma combina la información pública de eventos con inteligencia artificial, creando una experiencia de descubrimiento intuitiva, rápida y altamente personalizada.
 
-
 ## 2. Experiencia Doble
 
 Para ofrecer el mejor servicio, el proyecto se ha dividido en dos grandes herramientas complementarias que el usuario puede utilizar según lo que necesite en cada momento:
 
-### El Asistente Conversacional (El Chatbot)
+### Guni (Asistente conversacional)
 
-* **¿Qué hace?** Es un asistente virtual con el que el usuario puede interactuar de forma natural. Está pensado para búsquedas rápidas e inmediatas.
-* **¿Cómo funciona para el usuario?** Alguien puede simplemente escribir o decir:  *"Quiero un plan sin lluvia en Bilbao"* . El sistema entiende la intención de la frase, busca eventos en esa ciudad, revisa automáticamente el pronóstico del tiempo en tiempo real para descartar los planes pasados por agua, y devuelve sugerencias claras con toda la información necesaria (precios, horarios, clima y descripciones).
+* **¿Qué hace?** Guni es un asistente virtual con el que el usuario puede interactuar de forma natural. Está pensado para búsquedas rápidas e inmediatas.
+* **¿Cómo funciona para el usuario?** Alguien puede simplemente escribir o decir:  *"Quiero un plan sin lluvia en Bilbao"* . Guni entiende la intención de la frase, busca eventos en esa ciudad, revisa automáticamente el pronóstico del tiempo en tiempo real para descartar los planes pasados por agua, y devuelve sugerencias claras con toda la información necesaria (precios, horarios, clima y descripciones).
 
 ### El Recomendador Personalizado (Búsqueda con filtros)
 
@@ -43,7 +42,6 @@ El sistema actual es el resultado de un proceso de evolución iterativo. No se c
 Hoy en día, el proyecto es una herramienta que procesa peticiones en apenas unos segundos, entiende múltiples idiomas y es capaz de cruzar datos climáticos, geográficos y personales de manera invisible y fluida.
 
 De cara al futuro, el camino está marcado para seguir innovando: se planea crear sistemas colaborativos que encuentren similitudes entre diferentes usuarios ("a familias como la tuya también les gustó esto") y perfeccionar la capacidad de mantener conversaciones aún más complejas y largas con el asistente. Además, se quiere conectar el chatbot con el recomendador para que las respuestas del Chatbot pasen sean mucho más sofísticadas.
-
 
 ## 6. Aspectos Técnicos
 
