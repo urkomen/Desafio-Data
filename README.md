@@ -541,19 +541,19 @@ Usuario Request
 
 ### Fase 2: Mejoras de consultas (Días 2-4)
 
-- [ ] Mejorar contexto para que el modelo entienda más detalles
+- [ ] El chatbot devuelve información visualmente y consulta el clima
 - [ ] Se vectorizan planes y usuarios
 - [ ] Datos reales
 
 ### Fase 3: Consultas muy personalizadas (Días 4-5)
 
-- [ ] Resolver errores de input del usuario
+- [ ] Se optimiza el chatbot para responder mucho más rápido y la IA consulta bases de datos
 - [ ] Score_final  + boost promocional
 - [ ] Creamos tablas de datos y se usan de consulta
 
-### Fase 4: Consultas muy personalizadas (Futuro)
+### Fase 4: Conexión entre modelos (Futuro)
 
-- [ ] Resolver errores de input del usuario
+- [ ] Conectar chatbot al motor recomendador
 - [ ] Tener en cuenta similitud entre diferentes usuarios
 - [ ] Mejorar la calidad de datos con limpieza más exhaustiva
 
