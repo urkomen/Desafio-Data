@@ -1,0 +1,64 @@
+# docker-compose.data.prod.yml · Desafio-Data — Fase A: SOLO recomendador
+#
+# Despliegue CONSERVADOR: conecta `data-recommender` a la red interna Docker REAL
+# ya creada por pLANGUNE. NO crea redes nuevas, NO publica puertos, NO toca pLANGUNE,
+# NO incluye chatbot ni Ollama.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# ⚠️ ANTES DE USAR — detectar en el VPS el nombre REAL de la red interna de pLANGUNE
+#    y exportarlo en la variable OBLIGATORIA PLANGUNE_INTERNAL_NETWORK. NO se edita este
+#    archivo: el nombre se inyecta por entorno (export en el shell o un .env local en
+#    Desafio-Data, que está gitignored).
+#
+#    sudo docker network ls | grep -E 'plangune|desafio'
+#    sudo docker inspect plangune-backend-1 \
+#      --format '{{range $name, $_ := .NetworkSettings.Networks}}{{println $name}}{{end}}'
+#
+#    export PLANGUNE_INTERNAL_NETWORK="<NOMBRE_REAL>"      # o crear Desafio-Data/.env
+#
+#    external: true + variable obligatoria → si falta o es incorrecta, `docker compose`
+#    FALLA ("network not found") en vez de crear una red a ciegas. Es la salvaguarda.
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Arranque (en el VPS, NO ahora):
+#    docker compose -f docker-compose.data.prod.yml up -d --build
+
+services:
+  data-recommender:
+    build:
+      context: .
+      dockerfile: Dockerfile.recommender
+    image: desafio-data-recommender:prod        # versión concreta, NO :latest
+    container_name: desafio_data_recommender    # opcional; el backend usa el nombre de servicio
+    restart: unless-stopped
+
+    # Sin `ports:` → NO accesible desde Internet. Solo visible dentro de la red interna,
+    # donde el backend de pLANGUNE lo alcanza como  http://data-recommender:5000
+    expose:
+      - "5000"
+
+    # El recomendador es autónomo (Flask + pandas + CSV horneados en la imagen): sin Ollama,
+    # sin base de datos, sin red externa en runtime, sin secretos. `/health` devuelve el
+    # conteo de planes cargados. Healthcheck con `python` (la imagen slim no trae curl).
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=4).status==200 else 1)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+    networks:
+      - plangune_internal
+
+networks:
+  # Red interna REAL de pLANGUNE, YA EXISTENTE. NO se crea aquí (external: true).
+  # El nombre se toma de la variable OBLIGATORIA PLANGUNE_INTERNAL_NETWORK (export o
+  # Desafio-Data/.env). Si no está definida, el `:?` aborta `docker compose` con el
+  # mensaje, en lugar de usar/crear una red incorrecta a ciegas.
+  plangune_internal:
+    external: true
+    name: ${PLANGUNE_INTERNAL_NETWORK:?Define PLANGUNE_INTERNAL_NETWORK con la red interna real de pLANGUNE}

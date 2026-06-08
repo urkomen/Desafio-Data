@@ -1,0 +1,7 @@
+# Desafio-Data · .gitignore
+# Variables de entorno LOCALES (NO subir a Git). Incluye el .env con
+# PLANGUNE_INTERNAL_NETWORK (nombre de la red interna real de pLANGUNE detectada en el VPS),
+# que consume docker-compose.data.prod.yml. El template .env.example sí se versiona.
+.env
+.env.*
+!.env.example
