@@ -12,7 +12,7 @@ import ast
 
 EVENT_TYPES_API = "https://api.euskadi.eus/culture/events/v1.0/eventType"
 #UPCOMING_EVENTS_API = "https://api.euskadi.eus/culture/events/v1.0/events/upcoming"
-UPCOMING_EVENTS_API = "https://api.euskadi.eus/culture/events/v1.0/events/upcoming?_elements=500"
+UPCOMING_EVENTS_API = "https://api.euskadi.eus/culture/events/v1.0/events/upcoming?_elements=50"
 
 question = sys.argv[1]
 
