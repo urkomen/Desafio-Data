@@ -5,3 +5,8 @@
 .env
 .env.*
 !.env.example
+
+# Locales y cachés (no versionar; evita colarlos en `git add .`). NO ignora models/ entero.
+.claude/
+__pycache__/
+*.py[cod]
