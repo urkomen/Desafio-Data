@@ -80,27 +80,27 @@ Asistente que permite:
 ```
 Desafio-Data/
 │
-├── README.md                    # Este archivo
-├── docker-compose.yml           # Orquestación de contenedores
-├── Dockerfile                   # Imagen Docker del proyecto
+├── README.md                   # Este archivo
+├── docker-compose.yml          # Orquestación de contenedores
+├── Dockerfile                  # Imagen Docker del proyecto
 │
-├── models/                      # Sistemas de IA
-│   ├── Recommender/             # Sistema de recomendación
+├── models/                     # Sistemas de IA
+│   ├── Recommender/            # Sistema de recomendación
 │   │   ├── app.py              # API Flask del recomendador
-│   │   ├── recommender.py       # Lógica de scoring y perfil
+│   │   ├── recommender.py      # Lógica de scoring y perfil
 │   │   ├── config.py           # Configuración centralizada
 │   │   ├── data_access.py      # Acceso a BD y embeddings
 │   │   ├── location.py         # Detección de municipios
 │   │   └── requirements.txt
 │   │
-│   └── Chatbot/                 # Asistente conversacional
+│   └── Guni/                   # Asistente conversacional
 │       ├── app5.py             # API Flask del chatbot
 │       ├── API_LLM.py          # Motor de procesamiento
 │       ├── requirements.txt
 │       ├── report.md           # Informe técnico
 │       └── old_versions/       # Versiones anteriores
 │
-├── data/                        # Datos del proyecto
+├── data/                       # Datos del proyecto
 │   ├── descargas/              # Datasets CSV
 │   │   ├── events_*.csv        # Eventos del sistema
 │   │   ├── families.csv        # Perfiles familiares
@@ -112,7 +112,7 @@ Desafio-Data/
 │   └── eventos.db              # Base de datos SQLite
 │
 ├── documentation/               # Documentación del proyecto
-│   ├── chatbot.md               # Memoria técnica del chatbot
+│   ├── guni.md                  # Memoria técnica del chatbot
 │   ├── datos.md                 # Memoria técnica de datos
 │   └── recommender.md           # Memoria técnica del recomendador
 │
@@ -164,7 +164,7 @@ Usuario busca: "Museo en Bilbao para pasar un día en familia"
 - BD: SQLite con historial, favoritos, perfiles familiares
 - Framework: Flask REST API
 
-### 2. Chatbot Conversacional (`models/Chatbot/`)
+### 2. Asistente Conversacional (`models/Guni/`)
 
 **Propósito**: Búsqueda intuitiva en lenguaje natural con enriquecimiento automático.
 
@@ -214,7 +214,7 @@ docker-compose up -d
 
 # Los servicios estarán disponibles en:
 # - Recomendador: http://localhost:5000
-# - Chatbot: http://localhost:5001
+# - Asistente conversacional: http://localhost:5001
 ```
 
 ### Opción 2: Instalación Local
@@ -228,7 +228,7 @@ python app.py
 # Disponible en: http://localhost:5000
 ```
 
-#### Chatbot (requiere Ollama)
+#### Asistente conversacional (requiere Ollama)
 
 ```bash
 # Primero, instalar y ejecutar Ollama
@@ -236,7 +236,7 @@ curl https://ollama.ai/install.sh | sh
 ollama serve
 
 # En otra terminal:
-cd models/Chatbot
+cd models/Guni
 pip install -r requirements.txt
 python app5.py
 # Disponible en: http://localhost:5001
@@ -251,7 +251,7 @@ python app5.py
 | Servicio                 | URL                       | Descripción                          |
 | ------------------------ | ------------------------- | ------------------------------------- |
 | **Recomendador**   | `http://localhost:5000` | API de recomendaciones personalizadas |
-| **Chatbot**        | `http://localhost:5001` | API conversacional                    |
+| **Guni**           | `http://localhost:5001` | API conversacional                    |
 | **Documentación** | `/documentation/`       | Memorias y guías técnicas           |
 
 ### Autenticación
@@ -332,7 +332,7 @@ curl -X POST http://localhost:5000/recomendar \
 
 ---
 
-### Ejemplo 2: Usar el Chatbot
+### Ejemplo 2: Usar Guni
 
 **Scenario**: Usuario busca eventos para este domingo sin lluvia.
 
@@ -388,7 +388,7 @@ Actuación de "The Blue Cats" - Trío de jazz tradicional en directo...
 
 **Interpretación**:
 
-- El chatbot entendió la consulta en lenguaje natural
+- El asistente entendió la consulta en lenguaje natural
 - Filtró automáticamente por ubicación (Bilbao) y condiciones climáticas
 - Enriqueció con datos meteorológicos en tiempo real
 - Presentó resultados listos para mostrar (Markdown)
@@ -401,7 +401,7 @@ Actuación de "The Blue Cats" - Trío de jazz tradicional en directo...
 
 1. Usuario se registra en la plataforma
 2. Completa perfil familiar (edades, mascotas, preferencias)
-3. Usa el **Chatbot** para buscar: "Planes para familias con niños pequeños"
+3. Usa **Guni** para buscar: "Planes para familias con niños pequeños"
 4. Recibe recomendaciones inmediatas sin historial previo
 
 **Día 7: Usuario con Historial**
@@ -430,7 +430,7 @@ Actuación de "The Blue Cats" - Trío de jazz tradicional en directo...
 └────────────┬──────────────────────────┬─────────────────────┘
              │                          │
     ┌────────▼──────────┐    ┌─────────▼─────────────┐
-    │   Recomendador    │    │   Chatbot (Ollama)    │
+    │   Recomendador    │    │   Asistente (Ollama)  │
     │                   │    │                       │
     │ • Scoring         │    │ • LLM Generation      │
     │ • Similarity      │    │ • Natural Language    │
@@ -468,7 +468,7 @@ Usuario Request
     │   ↓
     │   Response: Top 10 eventos personalizados
     │
-    └─→ [Chatbot]
+    └─→ [Asistente conversacional]
         • LLM interpreta lenguaje natural
         • Genera filtro Python
         • Descarga eventos (API Euskadi)
@@ -515,7 +515,7 @@ Usuario Request
 | Documento                      | Ubicación                       | Descripción                                                     |
 | ------------------------------ | -------------------------------- | ---------------------------------------------------------------- |
 | **README Recomendador**  | `documentation/recommender.md` | Guía técnica del motor de recomendación                       |
-| **README Chatbot**       | `documentation/chatbot.md `    | Guía técnica del asistente conversacional                      |
+| **README Chatbot**       | `documentation/guni.md `       | Guía técnica del asistente conversacional                      |
 | **README Datos**         | `documentation/datos.md`       | Guía e información sobre los datos                             |
 | **Memoria Recomendador** | `memoria.md`                   | Descripción, decisiones, estructura y conclusiones del proyecto |
 
@@ -533,26 +533,27 @@ Usuario Request
 
 ### Fase 1: MVP (Día 1)
 
-- [ ] Chatbot recibe input y devuelve eventos
+- [ ] Guni recibe input y devuelve eventos
 - [ ] Recomendador devuelve lista de eventos
 - [ ] Datos ficticios en ficheros
 
 ### Fase 2: Mejoras de consultas (Días 2-4)
 
-- [ ] El chatbot devuelve información visualmente y consulta el clima
+- [ ] Guni devuelve información visualmente y consulta el clima
 - [ ] Se vectorizan planes y usuarios
 - [ ] Datos reales
 
 ### Fase 3: Consultas muy personalizadas (Días 4-5)
 
-- [ ] Se optimiza el chatbot para responder mucho más rápido y la IA consulta bases de datos
+- [ ] Se optimiza Guni para responder mucho más rápido y la IA consulta bases de datos
 - [ ] Score_final  + boost promocional
 - [ ] Creamos tablas de datos y se usan de consulta
 
 ### Fase 4: Conexión entre modelos (Futuro)
 
-- [ ] Conectar chatbot al motor recomendador, mejoras estéticas y funcionales extra
+- [ ] Conectar Guni al motor recomendador, mejoras estéticas y funcionales extra
 - [ ] Tener en cuenta similitud entre diferentes usuarios
+- [ ] Clusterización de planes y modelo SVC para añadir nuevo planes
 - [ ] Mejorar la calidad de datos con limpieza más exhaustiva
 
 ---
@@ -565,7 +566,7 @@ Crear issue en: https://github.com/urkomen/Desafio-Data/issues
 
 ### Sugerencias
 
-Discusiones: https://github.com/urkomen/Desafio-Data/discussions
+Discusiones (no habilitado): https://github.com/urkomen/Desafio-Data/discussions
 
 ### Licencia
 
@@ -635,4 +636,4 @@ Especificar aquí (MIT, GPL, etc.)
 
 ---
 
-**¿Preguntas?** Consulta la documentación en `/documentation/` o revisa los READMEs específicos de cada componente.
+**¿Preguntas?** Consulta la documentación en `/documentation/`.
