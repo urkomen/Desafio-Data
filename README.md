@@ -214,7 +214,7 @@ docker-compose up -d
 
 # Los servicios estarán disponibles en:
 # - Recomendador: http://localhost:5000
-# - Asistente conversacional: http://localhost:5001
+# - Asistente conversacional: http://localhost:5000
 ```
 
 ### Opción 2: Instalación Local
@@ -239,7 +239,7 @@ ollama serve
 cd models/Guni
 pip install -r requirements.txt
 python app5.py
-# Disponible en: http://localhost:5001
+# Disponible en: http://localhost:5000
 ```
 
 ---
@@ -251,7 +251,7 @@ python app5.py
 | Servicio                 | URL                       | Descripción                          |
 | ------------------------ | ------------------------- | ------------------------------------- |
 | **Recomendador**   | `http://localhost:5000` | API de recomendaciones personalizadas |
-| **Guni**           | `http://localhost:5001` | API conversacional                    |
+| **Guni**           | `http://localhost:5000` | API conversacional                    |
 | **Documentación** | `/documentation/`       | Memorias y guías técnicas           |
 
 ### Autenticación

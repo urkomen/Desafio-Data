@@ -1,6 +1,6 @@
 # Asistente conversacional de Eventos Culturales (Euskadi)
 
-Asistente conversacional inteligente para descubrir eventos culturales del País Vasco usando procesamiento de lenguaje natural y datos abiertos.
+Guni es nuestro Asistente conversacional inteligente para descubrir eventos culturales del País Vasco usando procesamiento de lenguaje natural y datos abiertos.
 
 ---
 
@@ -19,7 +19,6 @@ Asistente conversacional inteligente para descubrir eventos culturales del País
 | v5 (app5.py) | **Versión actual - Refactorizado** |
 
 ---
-
 
 ## Tabla de Contenidos
 
@@ -117,11 +116,10 @@ Usuario: "Eventos gratis en Bilbao para hoy"
 ## Estructura de Archivos
 
 ```
-models/Chatbot/
+models/Guni/
 ├── app5.py                 # API REST Flask (versión actual)
 ├── API_LLM.py              # Motor principal de procesamiento
 ├── requirements.txt        # Dependencias Python
-├── README.md               # Este archivo
 ├── report.md               # Informe técnico detallado
 └── old_versions/           # Versiones anteriores
     ├── API_LLM_original.py
@@ -150,7 +148,7 @@ models/Chatbot/
 
 ```bash
 # 1. Navegar a la carpeta
-cd models/Chatbot
+cd models/Guni
 
 # 2. Instalar dependencias
 pip install -r requirements.txt
@@ -484,7 +482,7 @@ Orquestador principal. Funciones clave:
 
 - [ ] Fine-tuning de modelo LLM específico
 - [ ] Interfaz conversacional multiturno
-- [ ] Integración con sistemas de recomendación
+- [ ] Integración con modelo de recomendación
 - [ ] Análisis de preferencias del usuario
 
 ---

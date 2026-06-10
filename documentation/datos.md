@@ -10,23 +10,23 @@ Repositorio centralizado de todos los datos del proyecto: eventos, usuarios, fam
 
 ## Historial de Cambios
 
-| Fecha      | Cambio                                  | Versión |
-| ---------- | --------------------------------------- | -------- |
-| 2026-06-02 | Descarga inicial de eventos             | 1.0      |
-| 2026-06-05 | Agregadas tablas de usuarios y familias | 2.0      |
-| 2026-06-06 | Embeddings generados                    | 2.0      |
+| Fecha      | Cambio                                      | Versión |
+| ---------- | ------------------------------------------- | -------- |
+| 2026-06-02 | Descarga inicial de eventos                 | 1.0      |
+| 2026-06-05 | Agregadas tablas de usuarios y familias     | 2.0      |
+| 2026-06-06 | Embeddings generados + similitud semántica | 2.0      |
 
 ---
 
 ## Tabla de Contenidos
 
-- [Historial de Cambios](#historial-de-cambios)
-- [Descripción General](#descripción-general)
-- [Estructura de Carpetas](#estructura-de-carpetas)
-- [Datos en CSV](#datos-en-csv)
-- [Base de Datos SQLite](#base-de-datos-sqlite)
-- [Embeddings Precalculados](#embeddings-precalculados)
-- [Esquema de Datos](#esquema-de-datos)
+- [Historial de Cambios](#Historial-de-Cambios)
+- [Descripción General](#Descripción-General)
+- [Estructura de Carpetas](#Estructura-de-Carpetas)
+- [Datos en CSV](#Datos-en-CSV)
+- [Base de Datos SQLite](#Base-de-Datos-SQLite)
+- [Embeddings Precalculados](#Embeddings-Precalculados)
+- [Esquema de Datos](#Esquema-de-Datos)
 - [Relaciones Entre Tablas](#relaciones-entre-tablas)
 - [Estadísticas](#estadísticas)
 - [Guía de Actualización](#guía-de-actualización)
@@ -73,16 +73,16 @@ APIs Públicas (Euskadi, Kulturklik, etc.)
 ```
 data/
 ├── descargas/                  # Datos en formato CSV (respaldo)
-│   ├── events_2026-06-02.csv  # Eventos culturales
+│   ├── events_2026-06-02.csv   # Eventos culturales
 │   ├── families.csv            # Perfiles de familias
 │   ├── family_members.csv      # Miembros de cada familia
 │   ├── users.csv               # Cuentas de usuarios
 │   ├── user_favorite_events.csv # Eventos marcados como favoritos
-│   └── user_selected_recommendations.csv # Historial de clics
+│   └── user_selected_recommendations.csv # Historial de eventos seleccionados por el usuario
 │
 ├── embeddings/                 # Vectores precalculados
-│   ├── embeddings.npy         # Matriz de embeddings (float32)
-│   └── embeddings_index.csv   # Mapeo id_evento → índice de fila
+│   ├── embeddings.npy          # Matriz de embeddings (float32)
+│   └── embeddings_index.csv    # Mapeo id_evento → índice de fila
 │
 ├── eventos.db                  # Base de datos SQLite principal
 │
@@ -111,7 +111,7 @@ data/
 | `categoria`       | STR   | Categoría del evento                 | `Música`, `Exposición`, `Teatro`         |
 | `tipo_plantilla`  | STR   | Tipo de lugar                         | `Centros comerciales`, `Museos`, `Teatros` |
 | `municipio`       | STR   | Ciudad/municipio                      | `Vitoria-Gasteiz`                              |
-| `territorio`      | STR   | Región (Álava/Bizkaia/Gipuzkoa)     | `araba`, `bizkaia`, `gipuzkoa`             |
+| `territorio`      | STR   | Región (Araba/Bizkaia/Gipuzkoa)      | `araba`, `bizkaia`, `gipuzkoa`             |
 | `address`         | STR   | Dirección completa                   | `Calle Principal, 42`                          |
 | `lat`             | FLOAT | Latitud de geolocalización           | 42.8449                                          |
 | `lng`             | FLOAT | Longitud                              | -2.6691                                          |
@@ -149,12 +149,12 @@ data/
 
 **Campos**:
 
-| Campo        | Tipo | Descripción                                  |
-| ------------ | ---- | --------------------------------------------- |
-| `id`       | INT  | Identificador único del usuario              |
-| `email`    | STR  | Correo electrónico (único)                  |
-| `password` | STR  | Hash de contraseña (enmascarado en ejemplos) |
-| `role`     | STR  | Rol del usuario (`user`, `admin`)         |
+| Campo        | Tipo | Descripción                                  | Ejemplo             |
+| ------------ | ---- | --------------------------------------------- | ------------------- |
+| `id`       | INT  | Identificador único del usuario              | 1                   |
+| `email`    | STR  | Correo electrónico (único)                  | `iker1@gmail.com` |
+| `password` | STR  | Hash de contraseña (enmascarado en ejemplos) | `Iker2024`        |
+| `role`     | STR  | Rol del usuario (`user`, `admin`)         | `user`            |
 
 **Registros aproximados**: 100+
 
@@ -173,11 +173,11 @@ data/
 
 **Campos**:
 
-| Campo           | Tipo | Descripción                     |
-| --------------- | ---- | -------------------------------- |
-| `id`          | INT  | Identificador único de familia  |
-| `user_id`     | INT  | FK a usuarios (relación 1:1)    |
-| `family_name` | STR  | Nombre descriptivo de la familia |
+| Campo           | Tipo | Descripción                     | Ejemplo                        |
+| --------------- | ---- | -------------------------------- | ------------------------------ |
+| `id`          | INT  | Identificador único de familia  | 1                              |
+| `user_id`     | INT  | FK a usuarios (relación 1:1)    | 10                             |
+| `family_name` | STR  | Nombre descriptivo de la familia | `Familia Etxebarria-Aguirre` |
 
 **Registros aproximados**: 100+
 
@@ -237,7 +237,7 @@ data/
 
 ### 6. `user_selected_recommendations.csv`
 
-**Descripción**: Historial de eventos que el usuario visitó o interaccionó con.
+**Descripción**: Historial de eventos que el usuario visitó o interaccionó.
 
 **Campos**:
 
@@ -253,7 +253,7 @@ data/
 
 **Registros aproximados**: 200+
 
-**Uso**: Este tabla alimenta el recomendador para construir el perfil del usuario.
+**Uso**: Esta tabla alimenta el recomendador para construir el perfil del usuario.
 
 ---
 
@@ -267,7 +267,7 @@ data/eventos.db
 
 ### Descripción
 
-Base de datos relacional que almacena toda la información de forma normalizada. Los CSVs se cargan aquí para consultas rápidas.
+Base de datos relacional que almacena toda la información de forma normalizada. Los CSVs se cargan aquí para consultas rápidas. Posteriormente se nutrirá de los datos del pipeline automatizado de ETL.
 
 ### Tablas Principales
 
@@ -410,7 +410,7 @@ SELECT * FROM events LIMIT 5;     # Ver primeros 5 eventos
 
 ### Descripción
 
-Vectores numéricos de 1024 dimensiones que representan el significado semántico de cada evento. Se usan para calcular similaridad entre eventos/consultas.
+Vectores numéricos de 1024 dimensiones que representan el significado semántico de cada evento. Se usan para calcular similaridad entre eventos/usuarios.
 
 ### Archivos
 
@@ -495,7 +495,7 @@ jupyter notebook embedder_multilingual_e5.ipynb
 
 ## Esquema de Datos
 
-### Diagrama ER
+### Diagrama E/R
 
 ```
 ┌─────────────┐
@@ -597,7 +597,7 @@ users (id: 10)
 
 ---
 
-## Guía de Actualización
+## Guía de Actualización (pipeline automatizado)
 
 ### Ciclo de Actualización
 
@@ -712,7 +712,7 @@ print(df_events['es_carrito'].sum())           # Eventos con carrito
 - Acceso restringido en entornos de producción
 - Usar variables de entorno para credenciales
 
-!!!!! Los datos actuales de las tablas de usuario son FICTICIOS, están para poder realizar pruebas
+!!!!! Los datos actuales de las tablas de usuario son FICTICIOS, se han generado para poder realizar pruebas
 
 ### RGPD
 

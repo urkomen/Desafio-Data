@@ -1,14 +1,21 @@
 # Motor Recomendador de Planes
 
-**Última actualización**: Junio 2026
-
-**Versión**: 2.0
-
 Sistema inteligente de recomendación de planes y eventos para familias basado en similitud semántica con embeddings precalculados usando `intfloat/multilingual-e5-large` (1024 dimensiones).
 
 ---
 
+**Última actualización**: Junio 2026
 
+**Versión**: 2.0
+
+## Historial de Versiones
+
+| Versión     | Cambios             |
+| ------------ | ------------------- |
+| v1 (app.py)  | Devuelve planes     |
+| v2 (app2.py) | Mejoras en formateo |
+
+---
 
 ## Tabla de Contenidos
 
