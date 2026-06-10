@@ -1,4 +1,4 @@
-# Memoria Conceptual: Sistema Integral de Recomendación y Descubrimiento de Eventos
+# Sistema Integral de Recomendación y Descubrimiento de Eventos
 
 ## 1. ¿De qué trata el proyecto?
 
@@ -10,10 +10,10 @@ El objetivo principal es ofrecer planes culturales (como exposiciones, concierto
 
 Para ofrecer el mejor servicio, el proyecto se ha dividido en dos grandes herramientas complementarias que el usuario puede utilizar según lo que necesite en cada momento:
 
-### Guni (Asistente conversacional)
+### GUNI (Asistente conversacional)
 
 * **¿Qué hace?** Guni es un asistente virtual con el que el usuario puede interactuar de forma natural. Está pensado para búsquedas rápidas e inmediatas.
-* **¿Cómo funciona para el usuario?** Alguien puede simplemente escribir o decir:  *"Quiero un plan sin lluvia en Bilbao"* . Guni entiende la intención de la frase, busca eventos en esa ciudad, revisa automáticamente el pronóstico del tiempo en tiempo real para descartar los planes pasados por agua, y devuelve sugerencias claras con toda la información necesaria (precios, horarios, clima y descripciones).
+* **¿Cómo funciona para el usuario?** Alguien puede simplemente escribir o decir:  *"Quiero un plan sin lluvia en Leioa"*  o "Dime eventos gratis en Bilbao a partir de las 19:00". Guni entiende la intención de la frase, busca eventos en esa ciudad, revisa automáticamente el pronóstico del tiempo en tiempo real para descartar los planes pasados por agua, y devuelve sugerencias claras con toda la información necesaria (precios, horarios, clima y descripciones).
 
 ### El Recomendador Personalizado (Búsqueda con filtros)
 
@@ -33,7 +33,7 @@ Ninguna recomendación inteligente sería posible sin una base sólida de inform
 El sistema actual es el resultado de un proceso de evolución iterativo. No se construyó todo de golpe, sino que ha ido superando distintas fases de madurez:
 
 * **Fase Inicial (El Producto Mínimo Viable):** Todo comenzó con un concepto básico donde el sistema recibía preguntas simples y devolvía listas de eventos usando datos simulados. El objetivo era, simplemente, conectar las piezas y demostrar que la idea funcionaba.
-* **La Evolución del Asistente:** El chatbot pasó por cinco versiones de desarrollo. Al principio solo daba respuestas planas (v1), luego mejoró la forma de presentar la información visualmente (v2), más adelante aprendió a consultar el clima (v3), se optimizó para responder mucho más rápido (v4), hasta llegar a la versión actual (v5), donde una inteligencia artificial traduce el lenguaje humano en búsquedas exactas dentro de la base de datos.
+* **La Evolución del Asistente:** El chatbot pasó por cinco versiones de desarrollo. Al principio solo daba respuestas planas (v1); luego mejoró la forma de presentar la información visualmente (v2); más adelante aprendió a consultar el clima (v3); se optimizó para responder mucho más rápido (v4); hasta llegar a la versión actual (v5), donde una inteligencia artificial traduce el lenguaje humano en búsquedas exactas dentro de la base de datos.
 * **La Evolución del Recomendador:** Inicialmente, el recomendador hacía cruces de datos simples. El gran salto ocurrió cuando se le enseñó a comprender el significado "semántico" de los eventos. El sistema aprendió a equilibrar dos cosas: lo que el usuario está buscando *hoy* frente a lo que le ha gustado  *históricamente* .
 * **Refinamiento del Negocio y Experiencia:** En sus etapas más recientes, la plataforma incluyó reglas de oro. Por ejemplo: aplicar penalizaciones temporales para no recomendar el mismo lugar visitado hace poco tiempo, o dar un pequeño impulso de visibilidad a los eventos promocionados (sin perder la calidad de la recomendación para el usuario).
 
@@ -41,7 +41,7 @@ El sistema actual es el resultado de un proceso de evolución iterativo. No se c
 
 Hoy en día, el proyecto es una herramienta que procesa peticiones en apenas unos segundos, entiende múltiples idiomas y es capaz de cruzar datos climáticos, geográficos y personales de manera invisible y fluida.
 
-De cara al futuro, el camino está marcado para seguir innovando: se planea crear sistemas colaborativos que encuentren similitudes entre diferentes usuarios ("a familias como la tuya también les gustó esto") y perfeccionar la capacidad de mantener conversaciones aún más complejas y largas con el asistente. Además, se quiere conectar el chatbot con el recomendador para que las respuestas del Chatbot pasen sean mucho más sofísticadas.
+De cara al futuro, el camino está marcado para seguir innovando: se planea mejorar la selección de eventossistemas colaborativos que encuentren similitudes entre diferentes usuarios ("a familias como la tuya también les gustó esto") y perfeccionar la capacidad de mantener conversaciones aún más complejas y largas con el asistente. Además, se quiere conectar el chatbot con el recomendador para que las respuestas del Chatbot pasen sean mucho más sofísticadas.
 
 ## 6. Aspectos Técnicos
 

@@ -6,22 +6,22 @@
 
 ## Tabla de Contenidos
 
-- [Descripción General](#-descripción-general)
-- [Características Principales](#-características-principales)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Componentes del Sistema](#-componentes-del-sistema)
-- [Instalación Rápida](#-instalación-rápida)
-- [Guía de Uso](#-guía-de-uso)
-- [Ejemplos Prácticos](#-ejemplos-prácticos)
-- [Arquitectura Técnica](#-arquitectura-técnica)
-- [Requisitos](#-requisitos)
-- [Documentación Completa](#-documentación-completa)
+- [Descripción General](#-Descripción-General)
+- [Características Principales](#-Características-Principales)
+- [Estructura del Proyecto](#-Estructura-del-Proyecto)
+- [Componentes del Sistema](#-Componentes-del-Sistema)
+- [Instalación Rápida](#-Instalación-Rápida)
+- [Guía de Uso](#-Guía-de-Uso)
+- [Ejemplos Prácticos](#-Ejemplos-Prácticos)
+- [Arquitectura Técnica](#-Arquitectura-Técnica)
+- [Requisitos](#-Requisitos)
+- [Documentación Completa](#-Documentación-Completa)
 
 ---
 
 ## Descripción General
 
-Este proyecto integra dos sistemas complementarios de inteligencia artificial para mejorar la experiencia de descubrimiento de eventos culturales:
+Este proyecto integra dos sistemas complementarios de inteligencia artificial para mejorar la experiencia de descubrimiento de eventos culturales y planes familiares:
 
 ### **Sistema 1: Recomendador Semántico**
 
@@ -32,7 +32,7 @@ Proporciona recomendaciones altamente personalizadas basadas en:
 - Filtros de accesibilidad y preferencias
 - Historial de eventos visitados del usuario y lista de eventos favoritos
 
-### **Sistema 2: Chatbot Conversacional**
+### **Sistema 2: Asistente Conversacional**
 
 Asistente que permite:
 
@@ -91,14 +91,12 @@ Desafio-Data/
 │   │   ├── config.py           # Configuración centralizada
 │   │   ├── data_access.py      # Acceso a BD y embeddings
 │   │   ├── location.py         # Detección de municipios
-│   │   ├── requirements.txt
-│   │   └── README.md           # Documentación específica
+│   │   └── requirements.txt
 │   │
 │   └── Chatbot/                 # Asistente conversacional
 │       ├── app5.py             # API Flask del chatbot
 │       ├── API_LLM.py          # Motor de procesamiento
 │       ├── requirements.txt
-│       ├── README.md           # Documentación específica
 │       ├── report.md           # Informe técnico
 │       └── old_versions/       # Versiones anteriores
 │
@@ -114,10 +112,9 @@ Desafio-Data/
 │   └── eventos.db              # Base de datos SQLite
 │
 ├── documentation/               # Documentación del proyecto
-│   ├── memoria_recomendador.md  # Memoria técnica del recomendador
-│   ├── Memoria_datos_v2.md      # Descripción de datos
-│   ├── Readme_datos.md          # Guía de datos
-│   └── memoria_proyecto_recomendador.md
+│   ├── chatbot.md               # Memoria técnica del chatbot
+│   ├── datos.md                 # Memoria técnica de datos
+│   └── recommender.md           # Memoria técnica del recomendador
 │
 ├── notebooks/                   # Notebooks de análisis
 │   ├── embedder_multilingual_e5.ipynb
@@ -242,7 +239,7 @@ ollama serve
 cd models/Chatbot
 pip install -r requirements.txt
 python app5.py
-# Disponible en: http://localhost:5000
+# Disponible en: http://localhost:5001
 ```
 
 ---
@@ -463,6 +460,7 @@ Usuario Request
     ↓
     ├─→ [Recomendador]
     │   • Lee perfil usuario (BD)
+    │   • Crea embedding perfil usuario
     │   • Lee historial (BD)
     │   • Busca embeddings (NPY)
     │   • Calcula scores
@@ -514,12 +512,12 @@ Usuario Request
 
 ### Documentos Técnicos
 
-| Documento                      | Ubicación                               | Descripción                                        |
-| ------------------------------ | ---------------------------------------- | --------------------------------------------------- |
-| **README Recomendador**  | `documentation/recommender_docu.md`    | Guía técnica del motor de recomendación          |
-| **README Chatbot**       | `documentation/chatbot_docu.md `       | Guía técnica del asistente conversacional         |
-| **README Datos**         | `documentation/recommender_docu.md`    | Guía e información sobre los datos                |
-| **Memoria Recomendador** | `documentation/memoria_recommender.md` | Decisiones , estructura y conclusiones del proyecto |
+| Documento                      | Ubicación                       | Descripción                                                     |
+| ------------------------------ | -------------------------------- | ---------------------------------------------------------------- |
+| **README Recomendador**  | `documentation/recommender.md` | Guía técnica del motor de recomendación                       |
+| **README Chatbot**       | `documentation/chatbot.md `    | Guía técnica del asistente conversacional                      |
+| **README Datos**         | `documentation/datos.md`       | Guía e información sobre los datos                             |
+| **Memoria Recomendador** | `memoria.md`                   | Descripción, decisiones, estructura y conclusiones del proyecto |
 
 ### Notebooks de Análisis
 
@@ -553,7 +551,7 @@ Usuario Request
 
 ### Fase 4: Conexión entre modelos (Futuro)
 
-- [ ] Conectar chatbot al motor recomendador
+- [ ] Conectar chatbot al motor recomendador, mejoras estéticas y funcionales extra
 - [ ] Tener en cuenta similitud entre diferentes usuarios
 - [ ] Mejorar la calidad de datos con limpieza más exhaustiva
 
@@ -575,19 +573,16 @@ Especificar aquí (MIT, GPL, etc.)
 
 ---
 
-## 👥 Contribuidores
+## Contribuidores
 
-- [Tu nombre/equipo]
-
----
-
-## 📄 Licencia
-
-[Especificar licencia del proyecto]
+- Urko Menendez
+- Ruben Novoa
+- Danillo Barros de Souza
+- Oscar Fernandez
 
 ---
 
-## 🎓 Referencias y Recursos
+## Referencias y Recursos
 
 ### Frameworks & Librerías
 
@@ -608,7 +603,7 @@ Especificar aquí (MIT, GPL, etc.)
 
 ---
 
-## 📊 Estadísticas del Proyecto
+## Estadísticas del Proyecto
 
 | Métrica                  | Valor                              |
 | ------------------------- | ---------------------------------- |
